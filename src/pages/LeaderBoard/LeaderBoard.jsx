@@ -9,7 +9,6 @@ import { getLeaders } from "../../api";
 
 export function LeaderBoard() {
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
   let position = 1;
   const leaders = useSelector(state => state.game.leaders);

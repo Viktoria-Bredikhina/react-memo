@@ -51,7 +51,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
     <div className={styles.modal}>
       <img className={styles.image} src={imgSrc} alt={imgAlt} />
       <h2 className={styles.title}>{title}</h2>
-      {isAddToLeaders() === true && isFinishedAddingToLeaderboard === false && (
+      {!isAddToLeaders() === true && isFinishedAddingToLeaderboard === false && (
         <>
           <input
             className={styles.username}

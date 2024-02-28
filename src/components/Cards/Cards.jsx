@@ -74,21 +74,21 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   });
 
   function finishGame(status = STATUS_LOST) {
-    setGameEndDate(new Date());
+    // setGameEndDate(new Date());
     setStatus(status);
   }
   function startGame() {
     const startDate = new Date();
-    setGameEndDate(null);
-    setGameStartDate(startDate);
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
+    setGameEndDate(null);
+    setGameStartDate(startDate);
   }
   function resetGame() {
-    setGameStartDate(null);
-    setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
+    setGameStartDate(null);
+    setGameEndDate(null);
   }
 
   /**
