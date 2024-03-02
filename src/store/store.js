@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { gameReducer } from "./slices";
+import easyModeReducer from "./reducers/easyModeReducer";
 
-export default configureStore({
+export const store = configureStore({
   reducer: {
-    game: gameReducer,
+    easyMode: easyModeReducer,
   },
 });
