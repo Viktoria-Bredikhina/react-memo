@@ -3,7 +3,7 @@
   height: 48px;
 
   border-radius: 12px;
-  background: #d4108c;
+  background: #5f19ec;
 
   color: #fff;
   text-align: center;
@@ -22,5 +22,5 @@
 }
 
 .button:hover {
-  background: #800071;
+  background: #f66ec9cc;
 }
