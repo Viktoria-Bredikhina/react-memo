@@ -49,7 +49,7 @@
 }
 
 .levelLink {
-  color: #790896;
+  color: #e499ec;
   text-align: center;
   font-family: StratosSkyeng;
   font-size: 20px;
@@ -59,7 +59,7 @@
 }
 
 .levelLinkSelected {
-  color: #035552;
+  color: #551e8f;
   text-align: center;
   font-family: StratosSkyeng;
   font-size: 20px;
@@ -69,14 +69,15 @@
 }
 
 .levelLink:visited {
-  color: #790896;
+  color: #e499ec;
 }
 
 .buttonStart {
   width: 246px;
   height: 48px;
   border-radius: 12px;
-  background: #d4108c;  color: #fff;
+  background: #d4108c;
+  color: #fff;
   font-family: StratosSkyeng;
   font-size: 24px;
   font-style: normal;
@@ -98,7 +99,7 @@
 
 .text_leaderbord {
   padding-top: 18px;
-  color:  #035552;
+  color: rgb(0, 73, 128);
   font-family: Roboto;
   font-size: 18px;
   font-weight: 400;
