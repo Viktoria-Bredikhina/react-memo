@@ -1,0 +1,70 @@
+.container {
+  width: 944px;
+  margin: 0 auto;
+  padding: 26px;
+  padding-top: 22px;
+  box-sizing: border-box;
+}
+  
+  
+  .header {   
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 35px;
+}
+  
+  
+  .title {
+    color: rgb(255, 255, 255);
+    font-family: Roboto;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 32px;
+    letter-spacing: 0%;
+    text-align: left;
+  }
+  
+  .levelLink {
+    color: #790896;
+    text-align: center;
+    font-family: StratosSkyeng;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    text-decoration: none;
+  }
+  .levelLinkSelected {
+    color:  #035552;
+    text-align: center;
+    font-family: StratosSkyeng;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    text-decoration: none;
+  }
+  
+  .levelLink:visited {
+    color: #790896;
+  }
+  
+  .buttonStart {
+    width: 246px;
+  height: 48px;
+  border-radius: 12px;
+  background: #d4108c;  color: #fff;
+  font-family: StratosSkyeng;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+  
+  
+ 

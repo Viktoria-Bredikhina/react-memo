@@ -40,7 +40,7 @@ function getTimerValue(startDate, endDate) {
  * pairsCount - сколько пар будет в игре
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
-export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+export function Cards({ pairsCount = 3, hasCounter = false, previewSeconds = 5 }) {
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -82,6 +82,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
    * - "Игрок проиграл", если на поле есть две открытые карты без пары
    * - "Игра продолжается", если не случилось первых двух условий
    */
+  let [attempt, setAttempt] = useState(3);
+
   const openCard = clickedCard => {
     // Если карта уже открыта, то ничего не делаем
     if (clickedCard.open) {
@@ -127,8 +129,26 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
-      finishGame(STATUS_LOST);
-      return;
+      if (hasCounter && attempt > 1) {
+        setAttempt(attempt - 1);
+        setTimeout(() => {
+          // Игровое поле: закрываем неверную карту обратно.
+          const nextCards = cards.map(card => {
+            const isOpen = openCardsWithoutPair.indexOf(card) > -1 ? false : card.open;
+            return {
+              ...card,
+              open: isOpen,
+            };
+          });
+
+          setCards(nextCards);
+        }, 700);
+
+        return;
+      } else {
+        finishGame(STATUS_LOST);
+        return;
+      }
     }
 
     // ... игра продолжается
@@ -157,6 +177,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       startGame();
     }, previewSeconds * 1000);
 
+    setAttempt(3);
     return () => {
       clearTimeout(timerId);
     };
@@ -171,6 +192,14 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       clearInterval(intervalId);
     };
   }, [gameStartDate, gameEndDate]);
+
+  const getClassByAttempt = () => {
+    if (attempt === 3 || attempt === 2) {
+      return styles.attemptNormal;
+    } else {
+      return styles.attemptLast;
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -198,6 +227,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
 
+      {hasCounter === true && status === STATUS_IN_PROGRESS && (
+        <div className={getClassByAttempt()}>{`Осталось ${attempt} попыток`}</div>
+      )}
+
       <div className={styles.cards}>
         {cards.map(card => (
           <Card
@@ -214,6 +247,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         <div className={styles.modalContainer}>
           <EndGameModal
             isWon={status === STATUS_WON}
+            isLeader={status === STATUS_WON && pairsCount === 9}
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}

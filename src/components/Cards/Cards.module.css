@@ -70,3 +70,36 @@
 
   margin-bottom: -12px;
 }
+
+.attemptNormal {
+  font-size: 30px;
+  line-height: 30px;
+  margin-top: 34px;
+  margin-bottom: 10px;
+  text-align: center;
+  padding-bottom: 20px;
+  font-family: StratosSkyeng;
+  color: rgb(60, 204, 60);
+}
+
+.attemptLast {
+  font-size: 30px;
+  line-height: 30px;
+  margin-top: 34px;
+  margin-bottom: 10px;
+  text-align: center;
+  padding-bottom: 20px;
+  font-family: StratosSkyeng;
+  color: rgb(233, 252, 61);
+}
+
+.attemptEmpty {
+  font-size: 30px;
+  line-height: 30px;
+  margin-top: 34px;
+  margin-bottom: 10px;
+  text-align: center;
+  padding-bottom: 20px;
+  font-family: StratosSkyeng;
+  color: rgb(228, 62, 62);
+}
