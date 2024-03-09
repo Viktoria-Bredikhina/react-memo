@@ -8,8 +8,17 @@ import { useState } from "react";
 import { postLeaderAtList } from "../../api";
 import { Link } from "react-router-dom";
 
-export function EndGameModal({ isWon, isLeader, gameDurationSeconds, gameDurationMinutes, onClick }) {
+export function EndGameModal({
+  isWon,
+  isLeader,
+  gameDurationSeconds,
+  gameDurationMinutes,
+  onClick,
+  usedHardMode = false,
+  usedMagic = false,
+}) {
   const [value, setValue] = useState("");
+  const [isLeaderAdded, setIsLeaderAdded] = useState(false);
 
   const handleKeyDown = event => {
     if (event.key === "Enter") {
@@ -24,16 +33,22 @@ export function EndGameModal({ isWon, isLeader, gameDurationSeconds, gameDuratio
 
   const sendResult = () => {
     if (value.trim() !== "") {
-      postLeaderAtList({ name: value, time: gameDurationMinutes * 60 + gameDurationSeconds });
-      setValue("");
+      postLeaderAtList({
+        name: value,
+        time: gameDurationMinutes * 60 + gameDurationSeconds,
+        isHard: usedHardMode,
+        isMagic: !usedMagic,
+      });
     }
+    setValue("");
+    setIsLeaderAdded(true);
   };
 
   return (
     <div className={styles.modal}>
       <img className={styles.image} src={imgSrc} alt={imgAlt} />
       <h2 className={styles.title}>{title}</h2>
-      {isWon && isLeader && (
+      {isWon && isLeader && !isLeaderAdded && (
         <div className={styles.new_leader}>
           <input
             className={styles.name_input}

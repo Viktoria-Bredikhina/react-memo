@@ -4,7 +4,10 @@ import { generateDeck } from "../../utils/cards";
 import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
-import { Card } from "../../components/Card/Card";
+import { Card } from "../Card/Card";
+
+import afterlightImageUrl from "./images/afterlight.svg";
+// import curcleImageUrl from "./images/curcle.svg";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -13,6 +16,8 @@ const STATUS_WON = "STATUS_WON";
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 // Начало игры: игрок видит все карты в течении нескольких секунд
 const STATUS_PREVIEW = "STATUS_PREVIEW";
+// Подсказка "Прозрение"
+const STATUS_EYE = "STATUS_EYE";
 
 function getTimerValue(startDate, endDate) {
   if (!startDate && !endDate) {
@@ -67,6 +72,7 @@ export function Cards({ pairsCount = 3, hasCounter = false, previewSeconds = 5 }
     setGameStartDate(startDate);
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
+    setIsEyeUsed(false);
   }
   function resetGame() {
     setGameStartDate(null);
@@ -184,14 +190,20 @@ export function Cards({ pairsCount = 3, hasCounter = false, previewSeconds = 5 }
   }, [status, pairsCount, previewSeconds]);
 
   // Обновляем значение таймера в интервале
+  const [isEyeUsed, setIsEyeUsed] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTimer(getTimerValue(gameStartDate, gameEndDate));
-    }, 300);
+    const intervalId = isPaused
+      ? setInterval(() => {
+          setIsPaused(false);
+        }, 5000)
+      : setInterval(() => {
+          setTimer(getTimerValue(gameStartDate, gameEndDate));
+        }, 300);
     return () => {
       clearInterval(intervalId);
     };
-  }, [gameStartDate, gameEndDate]);
+  }, [gameStartDate, gameEndDate, isPaused]);
 
   const getClassByAttempt = () => {
     if (attempt === 3 || attempt === 2) {
@@ -200,6 +212,19 @@ export function Cards({ pairsCount = 3, hasCounter = false, previewSeconds = 5 }
       return styles.attemptLast;
     }
   };
+  const handleEyeClick = () => {
+    setStatus(STATUS_EYE);
+    setTimeout(() => {
+      setStatus(STATUS_IN_PROGRESS);
+    }, 5000);
+    setIsPaused(true);
+    setIsEyeUsed(true);
+    setGameStartDate(new Date(gameStartDate.getTime() + 5000));
+  };
+
+  // const handleCurcleClick = () => {
+  //   console.log("нажал подсказку");
+  // };
 
   return (
     <div className={styles.container}>
@@ -224,7 +249,23 @@ export function Cards({ pairsCount = 3, hasCounter = false, previewSeconds = 5 }
             </>
           )}
         </div>
-        {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+        {status === STATUS_IN_PROGRESS ? (
+          <div className={styles.tooltipContainer}>
+            {!isEyeUsed ? (
+              <img onClick={handleEyeClick} src={afterlightImageUrl} alt="eye" className={styles.tooltipElement} />
+            ) : null}
+            <div className={styles.tooltip}>
+              <div className={styles.tooltip_text_header}>Прозрение</div>
+              <div className={styles.tooltip_text_describtion}>
+                На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается.
+              </div>
+            </div>
+            {/* <img onClick={handleCurcleClick} src={curcleImageUrl} alt="curcle" /> */}
+          </div>
+        ) : null}
+        {status === STATUS_IN_PROGRESS || status === STATUS_EYE ? (
+          <Button onClick={resetGame}>Начать заново</Button>
+        ) : null}
       </div>
 
       {hasCounter === true && status === STATUS_IN_PROGRESS && (
@@ -251,6 +292,8 @@ export function Cards({ pairsCount = 3, hasCounter = false, previewSeconds = 5 }
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}
+            usedHardMode={!hasCounter}
+            usedMagic={isEyeUsed}
           />
         </div>
       ) : null}
